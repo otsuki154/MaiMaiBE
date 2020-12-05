@@ -1,0 +1,7 @@
+{
+    "LOGIN"   : "/login",
+    "USER_REGISTER"   : "/user/register",
+    "USER_CSV"   : "/user/csv",
+    "URL"   : "http://localhost:1111"
+
+}
