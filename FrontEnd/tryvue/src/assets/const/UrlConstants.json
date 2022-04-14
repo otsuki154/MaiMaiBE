@@ -1,6 +1,0 @@
-{
-    "LOGIN"   : "/login",
-    "REGISTER_GET"   : "/register/get",
-    "URL"   : "http://localhost:2508"
-
-}

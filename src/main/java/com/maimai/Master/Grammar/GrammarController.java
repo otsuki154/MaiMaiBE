@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.maimai.Utils.CsvDownload;
+import com.maimai.Common.UrlConstants;
 import com.maimai.Utils.CsvUpload;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/grammar")
+@RequestMapping(UrlConstants.GRAMMAR)
 public class GrammarController {
 
     @Autowired
@@ -31,10 +29,10 @@ public class GrammarController {
     /**
      * ユーザー全件取得
      */
-    @GetMapping("/get")
+    @GetMapping(UrlConstants.GET)
     public List<GrammarReqModel> getGrammarMany() {
 
-        // ユーザー全件取得
+        // ユーザー全件取得-
         return service.selectMany();
     }
 

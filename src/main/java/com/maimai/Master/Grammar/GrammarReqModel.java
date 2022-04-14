@@ -130,19 +130,24 @@ public class GrammarReqModel {
 		public static List<GrammarReqModel> getListGrammar (List<String> listStr)
 		{
 			List<GrammarReqModel> listGrammar = new ArrayList<GrammarReqModel>();
-			for (String str : listStr) {
-				GrammarReqModel user = new GrammarReqModel();
-				String[] item = str.split(",");
-				user.setGrammarCd(item[0]);
-				user.setGrammarContent(item[1]);
-				user.setMeanVi(item[2]);
-				user.setMeanFunction(item[3]);
-				user.setWayUse(item[4]);
-				user.setLiteraryNature(item[5]);
-				user.setExample(item[6]);
-				user.setDiffLevel(item[7]);
-				listGrammar.add(user);
+			try {
+				for (String str : listStr) {
+					GrammarReqModel user = new GrammarReqModel();
+					String[] item = str.split("@");
+					user.setGrammarCd(item[0]);
+					user.setGrammarContent(item[1]);
+					user.setMeanVi(item[2]);
+					user.setMeanFunction(item[3]);
+					user.setWayUse(item[4]);
+					user.setLiteraryNature(item[5]);
+					user.setExample(item[6]);
+					user.setDiffLevel(item[7]);
+					listGrammar.add(user);
+				}
+			}catch(Exception e){
+				System.out.println(e);
 			}
+			
 			return listGrammar;
 		}
 
