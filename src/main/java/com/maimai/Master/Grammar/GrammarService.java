@@ -1,13 +1,6 @@
 package com.maimai.Master.Grammar;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class GrammarService {
 	@Autowired
 	GrammarDao dao;
-  
+
 	/**
 	 * insert用メソッド.
 	 */
@@ -96,21 +89,4 @@ public class GrammarService {
 		return result;
 	}
 
-    String download(HttpServletResponse response) {
-    	
-        try (OutputStream os = response.getOutputStream();) {
-        	
-        	String inputString = "Hello World!";
-        	byte[] byteArrray = inputString.getBytes();
-
-            response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=test.txt");
-            response.setContentLength(byteArrray.length);
-            os.write(byteArrray);
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

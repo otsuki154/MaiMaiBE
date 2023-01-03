@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.maimai.Common.UrlConstants;
 
 import com.maimai.Utils.CsvUpload;
+import com.maimai.Utils.DownloadUtils;
 
 @RestController
 @CrossOrigin
@@ -36,7 +37,6 @@ public class GrammarController {
 	 */
 	@GetMapping(UrlConstants.GET)
 	public List<GrammarReqModel> getGrammarMany() {
-
 		// ユーザー全件取得-
 		return service.selectMany();
 	}
@@ -46,7 +46,6 @@ public class GrammarController {
 	 */
 	@GetMapping("/register/get/{id:.+}")
 	public GrammarReqModel getGrammarOne(@PathVariable("id") String grammarId) {
-
 		// ユーザー１件取得
 		return service.selectOne(grammarId);
 	}
@@ -56,20 +55,13 @@ public class GrammarController {
 	 */
 	@PostMapping("/register/insert")
 	public String postGrammarOne(@RequestBody GrammarReqModel grammar) {
-
 		// ユーザーを１件登録
 		boolean result = service.insert(grammar);
-
 		String str = "";
-
 		if (result == true) {
-
 			str = "{\"result\":\"ok\"}";
-
 		} else {
-
 			str = "{\"result\":\"error\"}";
-
 		}
 
 		// 結果用の文字列をリターン
@@ -78,30 +70,22 @@ public class GrammarController {
 
 	@DeleteMapping("/register/delete/{id:.+}")
 	public String deleteGrammarOne(@PathVariable("id") String grammarId) {
-
 		// ユーザーを１件削除
 		boolean result = service.deleteOne(grammarId);
-
 		String str = "";
-
 		if (result == true) {
-
 			str = "{\"result\":\"ok\"}";
-
 		} else {
-
 			str = "{\"result\":\"error\"}";
-
 		}
-
 		// 結果用の文字列をリターン
 		return str;
 	}
 
-	@PostMapping("/print2")
+	@PostMapping("/download")
 	public void download(HttpServletResponse response) {
 		try {
-			service.download(response);
+			DownloadUtils.download(response);
 		} catch (Exception e) {
 			logger.error("ファイルダウンロードは失敗しました。", e);
 		}

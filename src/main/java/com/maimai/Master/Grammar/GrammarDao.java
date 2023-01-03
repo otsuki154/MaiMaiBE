@@ -12,150 +12,123 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class GrammarDao {
 
-    @Autowired
-    JdbcTemplate jdbc;
+	@Autowired
+	JdbcTemplate jdbc;
 
-    // Grammarテーブルの件数を取得.
-    
-    public int count() throws DataAccessException {
+	// Grammarテーブルの件数を取得.
 
-        // 全件取得してカウント
-        int count = jdbc.queryForObject("SELECT COUNT(*) FROM m_grammar", Integer.class);
+	public int count() throws DataAccessException {
 
-        return count;
-    }
+		// 全件取得してカウント
+		int count = jdbc.queryForObject("SELECT COUNT(*) FROM m_grammar", Integer.class);
 
-    // Grammarテーブルにデータを1件insert.
-    
-    public int insertOne(GrammarReqModel grammar) throws DataAccessException {
-        //１件登録
-        int rowNumber = jdbc.update("INSERT INTO m_grammar(grammarCd,"
-                + " grammarContent,"
-                + " meanVi,"
-                + " meanFunction,"
-                + " wayUse,"
-                + " literaryNature,"
-                + " example,"
-                + " diffLevel)"
-                + " VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-                grammar.getGrammarCd(),
-                grammar.getGrammarContent(),
-                grammar.getMeanVi(),
-                grammar.getMeanFunction(),
-                grammar.getWayUse(),
-                grammar.getLiteraryNature(),
-                grammar.getExample(),
-                grammar.getDiffLevel());
+		return count;
+	}
 
-        return rowNumber;
-    }
+	// Grammarテーブルにデータを1件insert.
 
-    // Grammarテーブルのデータを１件取得
-    
-    public GrammarReqModel selectOne(String grammarCd) throws DataAccessException {
+	public int insertOne(GrammarReqModel grammar) throws DataAccessException {
+		// １件登録
+		int rowNumber = jdbc.update(
+				"INSERT INTO m_grammar(grammarCd," + " grammarContent," + " meanVi," + " meanFunction," + " wayUse,"
+						+ " literaryNature," + " example," + " diffLevel)" + " VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+				grammar.getGrammarCd(), grammar.getGrammarContent(), grammar.getMeanVi(), grammar.getMeanFunction(),
+				grammar.getWayUse(), grammar.getLiteraryNature(), grammar.getExample(), grammar.getDiffLevel());
 
-        // １件取得
-        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM m_grammar"
-                + " WHERE grammarCd = ?", grammarCd);
+		return rowNumber;
+	}
 
-        // 結果返却用の変数
-        GrammarReqModel grammar = new GrammarReqModel();
+	// Grammarテーブルのデータを１件取得
 
-        // 取得したデータを結果返却用の変数にセットしていく
-        grammar.setGrammarNo((Integer) map.get("grammarNo"));
-        grammar.setGrammarCd((String) map.get("grammarCd"));
-        grammar.setGrammarContent((String) map.get("grammarContent"));
-        grammar.setMeanVi((String) map.get("meanVi"));
-        grammar.setMeanFunction((String) map.get("meanFunction"));
-        grammar.setWayUse((String) map.get("wayUse"));
-        grammar.setLiteraryNature((String) map.get("literaryNature"));
-        grammar.setExample((String) map.get("example"));
-        grammar.setDiffLevel((String) map.get("diffLevel"));
+	public GrammarReqModel selectOne(String grammarCd) throws DataAccessException {
 
+		// １件取得
+		Map<String, Object> map = jdbc.queryForMap("SELECT * FROM m_grammar" + " WHERE grammarCd = ?", grammarCd);
 
-        return grammar;
-    }
+		// 結果返却用の変数
+		GrammarReqModel grammar = new GrammarReqModel();
 
-    // Grammarテーブルの全データを取得.
-    
-    public List<GrammarReqModel> selectMany() throws DataAccessException {
+		// 取得したデータを結果返却用の変数にセットしていく
+		grammar.setGrammarNo((Integer) map.get("grammarNo"));
+		grammar.setGrammarCd((String) map.get("grammarCd"));
+		grammar.setGrammarContent((String) map.get("grammarContent"));
+		grammar.setMeanVi((String) map.get("meanVi"));
+		grammar.setMeanFunction((String) map.get("meanFunction"));
+		grammar.setWayUse((String) map.get("wayUse"));
+		grammar.setLiteraryNature((String) map.get("literaryNature"));
+		grammar.setExample((String) map.get("example"));
+		grammar.setDiffLevel((String) map.get("diffLevel"));
 
-        // M_USERテーブルのデータを全件取得
-        List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM m_grammar");
+		return grammar;
+	}
 
-        // 結果返却用の変数
-        List<GrammarReqModel> grammarrList = new ArrayList<>();
+	// Grammarテーブルの全データを取得.
 
-        // 取得したデータを結果返却用のListに格納していく
-        for (Map<String, Object> map : getList) {
+	public List<GrammarReqModel> selectMany() throws DataAccessException {
 
-            //Grammarインスタンスの生成
-            GrammarReqModel grammar = new GrammarReqModel();
+		// M_USERテーブルのデータを全件取得
+		List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM m_grammar");
 
-            // Grammarインスタンスに取得したデータをセットする
-            grammar.setGrammarNo((Integer) map.get("grammarNo"));
-            grammar.setGrammarCd((String) map.get("grammarCd"));
-            grammar.setGrammarContent((String) map.get("grammarContent"));
-            grammar.setMeanVi((String) map.get("meanVi"));
-            grammar.setMeanFunction((String) map.get("meanFunction"));
-            grammar.setWayUse((String) map.get("wayUse"));
-            grammar.setLiteraryNature((String) map.get("literaryNature"));
-            grammar.setExample((String) map.get("example"));
-            grammar.setDiffLevel((String) map.get("diffLevel"));
+		// 結果返却用の変数
+		List<GrammarReqModel> grammarrList = new ArrayList<>();
 
-            //結果返却用のListに追加
-            grammarrList.add(grammar);
-        }
+		// 取得したデータを結果返却用のListに格納していく
+		for (Map<String, Object> map : getList) {
 
-        return grammarrList;
-    }
+			// Grammarインスタンスの生成
+			GrammarReqModel grammar = new GrammarReqModel();
 
-    // Grammarテーブルを１件更新.
-    
-    public int updateOne(GrammarReqModel grammar) throws DataAccessException {
+			// Grammarインスタンスに取得したデータをセットする
+			grammar.setGrammarNo((Integer) map.get("grammarNo"));
+			grammar.setGrammarCd((String) map.get("grammarCd"));
+			grammar.setGrammarContent((String) map.get("grammarContent"));
+			grammar.setMeanVi((String) map.get("meanVi"));
+			grammar.setMeanFunction((String) map.get("meanFunction"));
+			grammar.setWayUse((String) map.get("wayUse"));
+			grammar.setLiteraryNature((String) map.get("literaryNature"));
+			grammar.setExample((String) map.get("example"));
+			grammar.setDiffLevel((String) map.get("diffLevel"));
 
-        //１件更新
-        int rowNumber = jdbc.update("UPDATE m_grammar"
-                + " SET"
-                + " grammarContent = ?,"
-                + " meanVi = ?,"
-                + " meanFunction = ?,"
-                + " wayUse = ?"
-                + " literaryNature = ?"
-                + " example = ?"
-                + " diffLevel = ?"
-                + " WHERE grammarCd = ?",
-                grammar.getGrammarContent(),
-                grammar.getMeanVi(),
-                grammar.getMeanFunction(),
-                grammar.getWayUse(),
-                grammar.getLiteraryNature(),
-                grammar.getExample(),
-                grammar.getDiffLevel(),
-        		grammar.getGrammarCd());
-        
+			// 結果返却用のListに追加
+			grammarrList.add(grammar);
+		}
 
-        //トランザクション確認のため、わざと例外をthrowする
-        //        if (rowNumber > 0) {
-        //            throw new DataAccessException("トランザクションテスト") {
-        //            };
-        //        }
+		return grammarrList;
+	}
 
-        return rowNumber;
-    }
+	// Grammarテーブルを１件更新.
 
-    // Grammarテーブルを１件削除.
-    
-    public int deleteOne(String grammarCd) throws DataAccessException {
+	public int updateOne(GrammarReqModel grammar) throws DataAccessException {
 
-        //１件削除
-        int rowNumber = jdbc.update("DELETE FROM m_grammar WHERE grammarCd = ?", grammarCd);
+		// １件更新
+		int rowNumber = jdbc.update(
+				"UPDATE m_grammar" + " SET" + " grammarContent = ?," + " meanVi = ?," + " meanFunction = ?,"
+						+ " wayUse = ?" + " literaryNature = ?" + " example = ?" + " diffLevel = ?"
+						+ " WHERE grammarCd = ?",
+				grammar.getGrammarContent(), grammar.getMeanVi(), grammar.getMeanFunction(), grammar.getWayUse(),
+				grammar.getLiteraryNature(), grammar.getExample(), grammar.getDiffLevel(), grammar.getGrammarCd());
 
-        return rowNumber;
-    }
+		// トランザクション確認のため、わざと例外をthrowする
+		// if (rowNumber > 0) {
+		// throw new DataAccessException("トランザクションテスト") {
+		// };
+		// }
 
-    //SQL取得結果をサーバーにCSVで保存する
-    
+		return rowNumber;
+	}
+
+	// Grammarテーブルを１件削除.
+
+	public int deleteOne(String grammarCd) throws DataAccessException {
+
+		// １件削除
+		int rowNumber = jdbc.update("DELETE FROM m_grammar WHERE grammarCd = ?", grammarCd);
+
+		return rowNumber;
+	}
+
+	// SQL取得結果をサーバーにCSVで保存する
+
 //    public void grammarrCsvOut() throws DataAccessException {
 //
 //        // M_USERテーブルのデータを全件取得するSQL
