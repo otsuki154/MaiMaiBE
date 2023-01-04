@@ -27,218 +27,215 @@ import com.maimai.login.domain.service.UserService;
 @CrossOrigin
 public class HomeController {
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
-    // 結婚ステータスのラジオボタン用変数
-    private Map<String, String> radioMarriage;
+	// 結婚ステータスのラジオボタン用変数
+	private Map<String, String> radioMarriage;
 
-    /**
-     * ラジオボタンの初期化メソッド（ユーザー登録画面と同じ）.
-     */
-    private Map<String, String> initRadioMarrige() {
+	/**
+	 * ラジオボタンの初期化メソッド（ユーザー登録画面と同じ）.
+	 */
+	private Map<String, String> initRadioMarrige() {
 
-        Map<String, String> radio = new LinkedHashMap<>();
+		Map<String, String> radio = new LinkedHashMap<>();
 
-        // 既婚、未婚をMapに格納
-        radio.put("既婚", "true");
-        radio.put("未婚", "false");
+		// 既婚、未婚をMapに格納
+		radio.put("既婚", "true");
+		radio.put("未婚", "false");
 
-        return radio;
-    }
+		return radio;
+	}
 
-    /**
-     * ホーム画面のGET用メソッド
-     */
-    @GetMapping("/home")
-    public String getHome(Model model) {
+	/**
+	 * ホーム画面のGET用メソッド
+	 */
+	@GetMapping("/home")
+	public String getHome(Model model) {
 
-        //コンテンツ部分にユーザー詳細を表示するための文字列を登録
-        model.addAttribute("contents", "login/home :: home_contents");
+		// コンテンツ部分にユーザー詳細を表示するための文字列を登録
+		model.addAttribute("contents", "login/home :: home_contents");
 
-        return "login/homeLayout";
-    }
+		return "login/homeLayout";
+	}
 
-    /**
-     * ユーザー一覧画面のGETメソッド用処理.
-     */
-    @GetMapping("/userList")
-    public String getUserList(Model model) {
+	/**
+	 * ユーザー一覧画面のGETメソッド用処理.
+	 */
+	@GetMapping("/userList")
+	public String getUserList(Model model) {
 
-        //コンテンツ部分にユーザー一覧を表示するための文字列を登録
-        model.addAttribute("contents", "login/userList :: userList_contents");
+		// コンテンツ部分にユーザー一覧を表示するための文字列を登録
+		model.addAttribute("contents", "login/userList :: userList_contents");
 
-        //ユーザー一覧の生成
-        List<User> userList = userService.selectMany();
+		// ユーザー一覧の生成
+		List<User> userList = userService.selectMany();
 
-        //Modelにユーザーリストを登録
-        model.addAttribute("userList", userList);
+		// Modelにユーザーリストを登録
+		model.addAttribute("userList", userList);
 
-        //データ件数を取得
-        int count = userService.count();
-        model.addAttribute("userListCount", count);
+		// データ件数を取得
+		int count = userService.count();
+		model.addAttribute("userListCount", count);
 
-        return "login/homeLayout";
-    }
+		return "login/homeLayout";
+	}
 
-    /**
-     * ユーザー詳細画面のGETメソッド用処理.
-     */
-    @GetMapping("/userDetail/{id:.+}")
-    public String getUserDetail(@ModelAttribute SignupForm form,
-            Model model,
-            @PathVariable("id") String userId) {
+	/**
+	 * ユーザー詳細画面のGETメソッド用処理.
+	 */
+	@GetMapping("/userDetail/{id:.+}")
+	public String getUserDetail(@ModelAttribute SignupForm form, Model model, @PathVariable("id") String userId) {
 
-        // ユーザーID確認（デバッグ）
-        System.out.println("userId = " + userId);
+		// ユーザーID確認（デバッグ）
+		System.out.println("userId = " + userId);
 
-        // コンテンツ部分にユーザー詳細を表示するための文字列を登録
-        model.addAttribute("contents", "login/userDetail :: userDetail_contents");
+		// コンテンツ部分にユーザー詳細を表示するための文字列を登録
+		model.addAttribute("contents", "login/userDetail :: userDetail_contents");
 
-        // 結婚ステータス用ラジオボタンの初期化
-        radioMarriage = initRadioMarrige();
+		// 結婚ステータス用ラジオボタンの初期化
+		radioMarriage = initRadioMarrige();
 
-        // ラジオボタン用のMapをModelに登録
-        model.addAttribute("radioMarriage", radioMarriage);
+		// ラジオボタン用のMapをModelに登録
+		model.addAttribute("radioMarriage", radioMarriage);
 
-        // ユーザーIDのチェック
-        if (userId != null && userId.length() > 0) {
+		// ユーザーIDのチェック
+		if (userId != null && userId.length() > 0) {
 
-            // ユーザー情報を取得
-            User user = userService.selectOne(userId);
+			// ユーザー情報を取得
+			User user = userService.selectOne(userId);
 
-            // Userクラスをフォームクラスに変換
-            form.setUserId(user.getUserId()); //ユーザーID
-            form.setUserName(user.getUserName()); //ユーザー名
-            form.setBirthday(user.getBirthday()); //誕生日
-            form.setAge(user.getAge()); //年齢
-            form.setMarriage(user.isMarriage()); //結婚ステータス
+			// Userクラスをフォームクラスに変換
+			form.setUserId(user.getUserId()); // ユーザーID
+			form.setUserName(user.getUserName()); // ユーザー名
+			form.setBirthday(user.getBirthday()); // 誕生日
+			form.setAge(user.getAge()); // 年齢
+			form.setMarriage(user.isMarriage()); // 結婚ステータス
 
-            // Modelに登録
-            model.addAttribute("signupForm", form);
-        }
+			// Modelに登録
+			model.addAttribute("signupForm", form);
+		}
 
-        return "login/homeLayout";
-    }
+		return "login/homeLayout";
+	}
 
-    /**
-     * ユーザー更新用処理.
-     */
-    @PostMapping(value = "/userDetail", params = "update")
-    public String postUserDetailUpdate(@ModelAttribute SignupForm form,
-            Model model) {
+	/**
+	 * ユーザー更新用処理.
+	 */
+	@PostMapping(value = "/userDetail", params = "update")
+	public String postUserDetailUpdate(@ModelAttribute SignupForm form, Model model) {
 
-        System.out.println("更新ボタンの処理");
+		System.out.println("更新ボタンの処理");
 
-        //Userインスタンスの生成
-        User user = new User();
+		// Userインスタンスの生成
+		User user = new User();
 
-        //フォームクラスをUserクラスに変換
-        user.setUserId(form.getUserId());
-        user.setPassword(form.getPassword());
-        user.setUserName(form.getUserName());
-        user.setBirthday(form.getBirthday());
-        user.setAge(form.getAge());
-        user.setMarriage(form.isMarriage());
+		// フォームクラスをUserクラスに変換
+		user.setUserId(form.getUserId());
+		user.setPassword(form.getPassword());
+		user.setUserName(form.getUserName());
+		user.setBirthday(form.getBirthday());
+		user.setAge(form.getAge());
+		user.setMarriage(form.isMarriage());
 
-        try {
+		try {
 
-            //更新実行
-            boolean result = userService.updateOne(user);
+			// 更新実行
+			boolean result = userService.updateOne(user);
 
-            if (result == true) {
-                model.addAttribute("result", "更新成功");
-            } else {
-                model.addAttribute("result", "更新失敗");
-            }
+			if (result == true) {
+				model.addAttribute("result", "更新成功");
+			} else {
+				model.addAttribute("result", "更新失敗");
+			}
 
-        } catch(DataAccessException e) {
+		} catch (DataAccessException e) {
 
-            model.addAttribute("result", "更新失敗(トランザクションテスト)");
+			model.addAttribute("result", "更新失敗(トランザクションテスト)");
 
-        }
+		}
 
-        //ユーザー一覧画面を表示
-        return getUserList(model);
-    }
+		// ユーザー一覧画面を表示
+		return getUserList(model);
+	}
 
-    /**
-     * ユーザー削除用処理.
-     */
-    @PostMapping(value = "/userDetail", params = "delete")
-    public String postUserDetailDelete(@ModelAttribute SignupForm form,
-            Model model) {
+	/**
+	 * ユーザー削除用処理.
+	 */
+	@PostMapping(value = "/userDetail", params = "delete")
+	public String postUserDetailDelete(@ModelAttribute SignupForm form, Model model) {
 
-        System.out.println("削除ボタンの処理");
+		System.out.println("削除ボタンの処理");
 
-        //削除実行
-        boolean result = userService.deleteOne(form.getUserId());
+		// 削除実行
+		boolean result = userService.deleteOne(form.getUserId());
 
-        if (result == true) {
+		if (result == true) {
 
-            model.addAttribute("result", "削除成功");
+			model.addAttribute("result", "削除成功");
 
-        } else {
+		} else {
 
-            model.addAttribute("result", "削除失敗");
+			model.addAttribute("result", "削除失敗");
 
-        }
+		}
 
-        //ユーザー一覧画面を表示
-        return getUserList(model);
-    }
+		// ユーザー一覧画面を表示
+		return getUserList(model);
+	}
 
-    /**
-     * ログアウト用処理.
-     */
-    @PostMapping("/logout")
-    public String postLogout() {
+	/**
+	 * ログアウト用処理.
+	 */
+	@PostMapping("/logout")
+	public String postLogout() {
 
-        //ログイン画面にリダイレクト
-        return "redirect:/login";
-    }
+		// ログイン画面にリダイレクト
+		return "redirect:/login";
+	}
 
-    /**
-     * ユーザー一覧のCSV出力用処理.
-     */
-    @GetMapping("/userList/csv")
-    public ResponseEntity<byte[]> getUserListCsv(Model model) {
+	/**
+	 * ユーザー一覧のCSV出力用処理.
+	 */
+	@GetMapping("/userList/csv")
+	public ResponseEntity<byte[]> getUserListCsv(Model model) {
 
-        //ユーザーを全件取得して、CSVをサーバーに保存する
-        userService.userCsvOut();
+		// ユーザーを全件取得して、CSVをサーバーに保存する
+		userService.userCsvOut();
 
-        byte[] bytes = null;
+		byte[] bytes = null;
 
-        try {
+		try {
 
-            //サーバーに保存されているsample.csvファイルをbyteで取得する
-            bytes = userService.getFile("sample.csv");
+			// サーバーに保存されているsample.csvファイルをbyteで取得する
+			bytes = userService.getFile("sample.csv");
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        //HTTPヘッダーの設定
-        HttpHeaders header = new HttpHeaders();
-        header.add("Content-Type", "text/csv; charset=UTF-8");
-        header.setContentDispositionFormData("filename", "sample.csv");
+		// HTTPヘッダーの設定
+		HttpHeaders header = new HttpHeaders();
+		header.add("Content-Type", "text/csv; charset=UTF-8");
+		header.setContentDispositionFormData("filename", "sample.csv");
 
-        //sample.csvを戻す
-        return new ResponseEntity<>(bytes, header, HttpStatus.OK);
-    }
+		// sample.csvを戻す
+		return new ResponseEntity<>(bytes, header, HttpStatus.OK);
+	}
 
-    /**
-     * アドミン権限専用画面のGET用メソッド.
-     * @param model Modelクラス
-     * @return 画面のテンプレート名
-     */
-    @GetMapping("/admin")
-    public String getAdmin(Model model) {
+	/**
+	 * アドミン権限専用画面のGET用メソッド.
+	 * 
+	 * @param model Modelクラス
+	 * @return 画面のテンプレート名
+	 */
+	@GetMapping("/admin")
+	public String getAdmin(Model model) {
 
-        //コンテンツ部分にユーザー詳細を表示するための文字列を登録
-        model.addAttribute("contents", "login/admin :: admin_contents");
+		// コンテンツ部分にユーザー詳細を表示するための文字列を登録
+		model.addAttribute("contents", "login/admin :: admin_contents");
 
-        //レイアウト用テンプレート
-        return "login/homeLayout";
-    }
+		// レイアウト用テンプレート
+		return "login/homeLayout";
+	}
 }

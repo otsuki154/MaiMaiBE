@@ -9,6 +9,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+/**
+ * GrammarテーブルのデータのCRUD
+ *
+ * @author Thanh 
+ * @since 1.0
+ * @version 1.0
+ */
 @Repository
 public class GrammarDao {
 
@@ -16,7 +23,6 @@ public class GrammarDao {
 	JdbcTemplate jdbc;
 
 	// Grammarテーブルの件数を取得.
-
 	public int count() throws DataAccessException {
 
 		// 全件取得してカウント
@@ -25,8 +31,13 @@ public class GrammarDao {
 		return count;
 	}
 
-	// Grammarテーブルにデータを1件insert.
-
+	/**
+	 * Grammarテーブルにデータを1件insert.
+	 *
+	 * @param GrammarReqModel　
+	 * @return rowNumber 登録したインデックス番号.
+	 * @throws DataAccessException DBにアクセルできない場合、例外が発生する
+	 */
 	public int insertOne(GrammarReqModel grammar) throws DataAccessException {
 		// １件登録
 		int rowNumber = jdbc.update(
@@ -39,7 +50,6 @@ public class GrammarDao {
 	}
 
 	// Grammarテーブルのデータを１件取得
-
 	public GrammarReqModel selectOne(String grammarCd) throws DataAccessException {
 
 		// １件取得
@@ -63,7 +73,6 @@ public class GrammarDao {
 	}
 
 	// Grammarテーブルの全データを取得.
-
 	public List<GrammarReqModel> selectMany() throws DataAccessException {
 
 		// M_USERテーブルのデータを全件取得
@@ -97,7 +106,6 @@ public class GrammarDao {
 	}
 
 	// Grammarテーブルを１件更新.
-
 	public int updateOne(GrammarReqModel grammar) throws DataAccessException {
 
 		// １件更新
@@ -118,7 +126,6 @@ public class GrammarDao {
 	}
 
 	// Grammarテーブルを１件削除.
-
 	public int deleteOne(String grammarCd) throws DataAccessException {
 
 		// １件削除
